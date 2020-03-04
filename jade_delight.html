@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Jade Delight</title>
+</head>
+
+<body>
+    <script language="javascript">
+        function MenuItem(name, cost) {
+            this.name = name;
+            this.cost = cost;
+        }
+
+        menuItems = new Array(
+            new MenuItem("Chicken Chop Suey", 4.5),
+            new MenuItem("Sweet and Sour Pork", 6.25),
+            new MenuItem("Shrimp Lo Mein", 5.25),
+            new MenuItem("Moo Shi Chicken", 6.5),
+            new MenuItem("Fried Rice", 2.35)
+        );
+
+        function makeSelect(name, minRange, maxRange) {
+            var t = "";
+            t = "<select name='" + name + "' size='1'>";
+            for (j = minRange; j <= maxRange; j++)
+                t += "<option>" + j + "</option>";
+            t += "</select>";
+            return t;
+        }
+    </script>
+    <script lang="javascript">
+        /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        When a user selects a quantity
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                the amount should automatically be filled in to the corresponding total cost box.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                The subtotal, tax and total should update and be filled in
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+        function checkSub() {
+            var name = document.forms["myform"]['lname'].value;
+            var phone = document.forms["myform"]['phone'].value;
+            var p_or_d = document.forms["myform"]['p_or_d'].value;
+            var st = document.forms["myform"]['street'].value;
+            var city = document.forms["myform"]['city'].value;
+            var time;
+            var valid = true;
+            if (isNaN(phone) || phone.length < 10 || phone.length === 0) {
+                valid = false;
+                alert("re-enter your phone please")
+            }
+            if (name.length === 0) {
+                valid = false;
+                alert("please enter your last name");
+            }
+            if (p_or_d === 'delivery') {
+                if (st.length === 0 || city.length === 0) {
+                    alert("please enter your street and city");
+                    valid = false;
+                } else {
+                    time = "Expected delivery time: 30 minutes";
+                }
+            } else if (p_or_d === "pickup") {
+                time = "Expected order time: 15 min";
+
+            }
+            if (valid) {
+                alert("Thank you for your order. " + time);
+            }
+
+            return valid;
+            var temp;
+
+
+        }
+    </script>
+
+    <h1>Jade Delight</h1>
+
+    <form name="myform" onsubmit="return checkSub()">
+
+        <p>First Name: <input type="text" name='fname' /></p>
+        <p>Last Name*: <input type="text" name='lname' /></p>
+        <p>Street: <input type="text" name='street' /></p>
+        <p>City: <input type="text" name='city' /></p>
+        <p>Phone*: <input type="text" name='phone' /></p>
+        <p>
+            <input type="radio" name="p_or_d" value="pickup" checked="checked" />Pickup
+            <input type="radio" name='p_or_d' value='delivery' /> Delivery
+        </p>
+        <table border="0" cellpadding="3">
+            <tr>
+                <th>Select Item</th>
+                <th>Item Name</th>
+                <th>Cost Each</th>
+                <th>Total Cost</th>
+            </tr>
+            <script language="javascript">
+                var s = "";
+                for (i = 0; i < menuItems.length; i++) {
+                    s += "<tr><td>";
+                    s += makeSelect("quan" + i, 0, 10);
+                    s += "</td><td>" + menuItems[i].name + "</td>";
+                    s += "<td> $ " + menuItems[i].cost.toFixed(2) + "</td>";
+                    s += "<td>$<input type='text' name='cost'/></td></tr>";
+                }
+                document.writeln(s);
+                //my code
+                for (i = 0; i < menuItems.length; i++) {
+                    var temp = document.getElementsByName("quan" + i)[0];
+                    temp.onchange = function() {
+                        setQuant()
+                    };
+
+                }
+
+                function setQuant() {
+
+                    var cost = [];
+                    for (i = 0; i < menuItems.length; i++) {
+
+                        cost[i] = document.getElementsByName("quan" + i)[0].value * menuItems[i].cost;
+                        document.getElementsByName("cost")[i].value = cost[i].toFixed(2);
+
+                    }
+                    var sum = 0;
+                    var tax = 0;
+                    cost.forEach(element => {
+                        sum += element;
+                    });
+                    sum = sum;
+                    tax = (sum * .0625);
+                    document.getElementById("subtotal").value = sum.toFixed(2);
+                    document.getElementById("tax").value = tax.toFixed(2);
+                    document.getElementById("total").value = (tax + sum).toFixed(2);
+                }
+            </script>
+        </table>
+        <p>Subtotal: $
+            <input type="text" name='subtotal' id="subtotal" />
+        </p>
+        <p>Mass tax 6.25%: $ <input type="text" name='tax' id="tax" />
+        </p>
+        <p>Total: $ <input type="text" name='total' id="total" />
+        </p>
+
+        <input type="submit" value="Submit Order" />
+
+    </form>
+    <script lang="javascript">
+        // this was put to handle the case where the user has not inputed anything  as mentioned in piazza ***
+        document.getElementById("subtotal").value = 0;
+        document.getElementById("tax").value = 0;
+        document.getElementById("total").value = 0;
+    </script>
+</body>
+
+</html>
