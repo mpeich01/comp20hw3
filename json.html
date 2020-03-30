@@ -1,0 +1,170 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>JSON Homework</title>
+    <style>
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+
+        <h1> Seralized Data: </h1>
+        <p id="serialized"> </p>
+    </div>
+    <script>
+        list = {
+            "setlist": [{
+                "artist": ["The Beatles", "Georgey"],
+                "title": "Here Comes The Sun",
+                "genre": ["Rock"],
+                "year": 1969
+            }, {
+                "artist": ["The Beatles"],
+                "title": "Norwegian Wood",
+                "genre": ["Rock"],
+                "year": 1965
+            }, {
+                "artist": ["The Beatles"],
+                "title": "Yesterday",
+                "genre": ["Pop"],
+                "year": 1965
+            }, {
+                "artist": ["Coldplay"],
+                "title": "Yellow",
+                "genre": ["Pop"],
+                "year": 2000
+            }, {
+                "artist": ["Sam Cooke"],
+                "title": "A Change is Gonna Come",
+                "genre": ["R & B"],
+                "year": 1964
+            }, {
+                "artist": ["Coldplay"],
+                "title": "Viva La Vida",
+                "genre": ["Pop"],
+                "year": 2008
+            }, {
+                "artist": ["John Mayer"],
+                "title": "Gravity",
+                "genre": ["Pop"],
+                "year": 2005
+            }, {
+                "artist": ["Elton John"],
+                "title": "Your Song",
+                "genre": ["Rock"],
+                "year": 1970
+            }, {
+                "artist": ["Nat King Cole"],
+                "title": "L-O-V-E",
+                "genre": ["Jazz"],
+                "year": 1965
+            }, {
+                "artist": ["Simon & Garfunkel"],
+                "title": "The Boxer",
+                "genre": ["Folk", "Rock"],
+                "year": 1970
+            }]
+        }
+
+        var slist = JSON.stringify(list);
+        document.getElementById('serialized').innerHTML = slist;
+    </script>
+    <h1> Table Data: </h1>
+    <table style="width: 100%;">
+        <tr>
+            <th>Artist </th>
+            <th>Song </th>
+            <th>Genre</th>
+            <th>Year </th>
+        </tr>
+        <script>
+            s = ""
+            for (i = 0; i < list.setlist.length; i++) {
+                s += "<tr>"
+                s += "<td> "
+                for (j = 0; j < list.setlist[i].artist.length; j++)
+                    s += list.setlist[i].artist[j] + ",  ";
+                s += "</td>";
+                s += "<td> " + list.setlist[i].title + ",  " + "</td>";
+                s += "<td> "
+                for (j = 0; j < list.setlist[i].genre.length; j++)
+                    s += list.setlist[i].genre[j] + ",  ";
+                s += "</td>";
+                s += "<td> " + list.setlist[i].year + ",  " + "</td>"
+                s += "</tr>";
+            }
+            document.writeln(s)
+        </script>
+    </table>
+    <h1>Filtered Data: </h1>
+    <form style="padding-top: 15px;" onsubmit="return false">
+        <select id="genre" style="font-size:20px ;">
+            <option>Choose a genre</option>
+            <option>Rock</option>
+            <option>Pop</option>
+            <option>R & B</option>
+            <option>Jazz</option>
+            <option>Folk</option>
+        </select>
+        <button type="button" style="font-size: 15px" onclick="filter()">Filter</button>
+
+        <table id="table" style="width: 100%;">
+
+            <script>
+                function filter() {
+                    var sgen = document.getElementById("genre").value;
+                    var table = document.getElementById("table");
+                    len = table.rows.length
+                    for (i = 0; i < len; i++) {
+                        table.deleteRow(-1);
+                    }
+                    var rownum = 0;
+                    for (i = 0; i < list.setlist.length; i++) {
+                        for (j = 0; j < list.setlist[i].genre.length; j++)
+                            if (sgen == list.setlist[i].genre[j]) {
+                                var row = table.insertRow(rownum);
+
+                                row.insertCell(-1).innerHTML = list.setlist[i].artist;
+                                row.insertCell(-1).innerHTML = list.setlist[i].title;
+                                row.insertCell(-1).innerHTML = list.setlist[i].genre;
+                                row.insertCell(-1).innerHTML = list.setlist[i].year;
+
+                                rownum++;
+                            }
+                    }
+                    header = table.insertRow(0);
+                    header.insertCell(0).innerHTML = "<b>" + "Artist" + "</br>";
+                    header.insertCell(0).innerHTML = "<b>" + "Song" + "</br>";
+                    header.insertCell(0).innerHTML = "<b>" + "Genre" + "</br>";
+                    header.insertCell(0).innerHTML = "<b>" + "Year" + "</br>";
+
+                    return false
+                }
+            </script>
+
+        </table>
+        <!--
+    Include a form that allows the user to pick a genre.  
+    The form should have a drop down box (<select>) listing the possible genres plus a  button  labeled "Filter".  
+    You must list only genres that are in the set list.  
+
+Genres are: Rock, Pop, R & B, Jazz, Folk 
+*remember to add rock to the boxer after.
+    make form
+    make selects
+    make button Filter
+    on click filter
+    display only songs with that genre
+
+ -->
+    </form>
+</body>
+
+
+
+</html>
