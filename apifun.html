@@ -12,7 +12,7 @@
             theWord = document.forms[0].word.value;
             request.open("GET", "https://financialmodelingprep.com/api/v3/company/profile/" + theWord, true);
             url = "https://financialmodelingprep.com/api/v3/company/profile/" + theWord;
-            document.getElementById("cData").innerHTML = "API is: " + url;
+            document.getElementById("cData").innerHTML = "<br> API is: " + url + "<br>";
 
             request.onreadystatechange = function() {
 
@@ -25,6 +25,7 @@
                         document.getElementById("cData").innerHTML += "<br> INVALID TICKER "
                     } else
                         document.getElementById("cData").innerHTML += "<br>Price of the stock is: " + myArr.profile.price;
+                    document.getElementById("aData").innerHTML += "All data retrieved: <br><br>" + theData + "<br> <br> the extra information above was included so you can see all info returned by this API";
 
 
 
@@ -44,6 +45,8 @@
         <br><input type="button" value="Get Response" onclick="loadData()">
     </form>
     <div id="cData">&nbsp;<br> <br> </div>
+    <div id="aData">
+    </div>
 </body>
 
 </html>
